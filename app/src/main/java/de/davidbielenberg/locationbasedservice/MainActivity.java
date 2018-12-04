@@ -10,10 +10,13 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             latitude = location.getLatitude();
             longitude = location.getLongitude();
-            textView.setText(textView.getText().toString() + " long: " + longitude + ", lat: " + latitude);
+            textView.setText(textView.getText().toString() + "long: " + longitude + ", lat: " + latitude + System.getProperty ("line.separator"));
 
 
             //HIER WEITER MACHEN!!!
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
 
-            Log.i("Status Changed", "Provider: " + provider + ". Status: " + status);
+            Log.i("Status Changed", "Provider: " + provider + ". Status: " + status );
             textView.setText("status changed");
         }
 
@@ -90,6 +93,20 @@ public class MainActivity extends AppCompatActivity {
 
         mapView = findViewById(R.id.mapView);
 
+        textView.setMovementMethod(new ScrollingMovementMethod());
+
+        try {
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_FINE_LOCATION);
+
+            }
+
+        }catch(Exception exc){
+            Log.i("Exception", "Permnission excception! " + exc.toString());
+        }
+
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,14 +126,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         Log.i("Start", "Start Button Clicked");
-        textView.setText("gestartet");
+        textView.setText("gestartet" + System.getProperty ("line.separator"));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        try {
 
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_FINE_LOCATION );
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+
+
+            }
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+        }catch(Exception exc){
+            Log.i("Exception", "Permnission excception! " + exc.toString());
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
 
 
 
@@ -130,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     public void stopTracking(View v) {
 
 
-        textView.setText(textView.getText().toString() + "long: " + longitude + ", lat: " + latitude+ "Stopped!");
+        textView.setText(textView.getText().toString() + "long: " + longitude + ", lat: " + latitude+ System.getProperty ("line.separator") +  "Stopped!" + System.getProperty ("line.separator") );
 
         locationManager.removeUpdates(locationListener);
 
