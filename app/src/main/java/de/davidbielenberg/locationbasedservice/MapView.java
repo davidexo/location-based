@@ -57,7 +57,7 @@ public class MapView extends View {
 
     }
 
-    public void setPosition(double longitude, double latitude){
+    public void setPosition(double latitude, double longitude){
 
         mapWidth = this.getWidth();
         mapHeight = this.getHeight();
@@ -92,15 +92,19 @@ public class MapView extends View {
         super.onDraw(canvas);
 
 
-        Rect bounds = canvas.getClipBounds();
-        mapdrawable.setBounds(bounds);
-        mapdrawable.draw(canvas);
+            Rect bounds = canvas.getClipBounds();
+            mapdrawable.setBounds(bounds);
+            mapdrawable.draw(canvas);
+
+       // paint = new Paint();
+        //paint.setColor(Color.RED);
+       // paint.setStyle(Paint.Style.FILL);
 
         //Kreis
         canvas.drawCircle(y,x,size,paint);
 
 
-        invalidate();
+        //invalidate();
 
     }
 }

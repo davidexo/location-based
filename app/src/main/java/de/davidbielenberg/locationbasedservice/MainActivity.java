@@ -57,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(textView.getText().toString() + "long: " + longitude + ", lat: " + latitude + System.getProperty ("line.separator"));
 
 
-            //HIER WEITER MACHEN!!!
+
             mapView.setPosition(longitude, latitude);
+            mapView.invalidate();
 
         }
 
