@@ -32,10 +32,13 @@ public class MapView extends View {
     //Map
     double mapWidth;
     double mapHeight;
-    double startLat;
-    double startLon;
-    double endLat;
-    double endLon;
+    //Links-Oben
+    double startLon = 54.774028;
+    double startLat = 9.448113;
+
+    //Rechts-Unten
+    double endLon = 54.776627;
+    double  endLat = 9.453253;
     double mapLon;
     double mapLat;
 
@@ -65,20 +68,18 @@ public class MapView extends View {
         mapLon = startLon - endLon;
         mapLat = endLat - startLat;
 
-        //Links-Oben
-        startLon = 54.776627;
-        startLat = 9.448113;
-
-        //Rechts-Unten
-        endLon = 54.774028;
-        endLat = 9.453253;
 
 
-        xMap = ((mapWidth*(startLon-longitude))/mapLon);
-        yMap = ((-mapHeight*(startLat-latitude))/mapLat);
 
-        Log.i("PixelWidth", "" + xMap);
-        Log.i("PixelHeight", "" + yMap);
+        //xMap = ((mapWidth*(startLon-longitude))/mapLon);
+        xMap = ( this.getWidth() / (9.453253 - 9.448113) ) * (latitude - 9.448113);
+        //yMap = ((-mapHeight*(startLat-latitude))/mapLat);
+
+        yMap = ( this.getHeight() / (54.776627 - 54.774028) ) * (54.776627 - longitude);
+
+        Log.i("ALL", "WIDTH:" + this.getWidth() + " Height:" + this.getHeight() + " x:" + xMap + " y:" + yMap);
+       // Log.i("PixelWidth", "" + xMap);
+       // Log.i("PixelHeight", "" + yMap);
 
 
 
@@ -93,15 +94,15 @@ public class MapView extends View {
 
 
             Rect bounds = canvas.getClipBounds();
-            mapdrawable.setBounds(bounds);
-            mapdrawable.draw(canvas);
+
+
 
        // paint = new Paint();
         //paint.setColor(Color.RED);
        // paint.setStyle(Paint.Style.FILL);
 
         //Kreis
-        canvas.drawCircle(y,x,size,paint);
+        canvas.drawCircle(x,y,size,paint);
 
 
         //invalidate();
